@@ -13,16 +13,16 @@ CMD ["/sbin/my_init"]
 
 # Install locales
 ENV DEBIAN_FRONTEND noninteractive
-RUN locale-gen cs_CZ.UTF-8
-RUN locale-gen de_DE.UTF-8
-RUN locale-gen es_ES.UTF-8
-RUN locale-gen fr_FR.UTF-8
-RUN locale-gen it_IT.UTF-8
-RUN locale-gen pl_PL.UTF-8
-RUN locale-gen pt_BR.UTF-8
-RUN locale-gen ru_RU.UTF-8
-RUN locale-gen sl_SI.UTF-8
-RUN locale-gen uk_UA.UTF-8
+RUN        locale-gen cs_CZ.UTF-8 \
+	&& locale-gen de_DE.UTF-8 \
+	&& locale-gen es_ES.UTF-8 \
+	&& locale-gen fr_FR.UTF-8 \
+	&& locale-gen it_IT.UTF-8 \
+	&& locale-gen pl_PL.UTF-8 \
+	&& locale-gen pt_BR.UTF-8 \
+	&& locale-gen ru_RU.UTF-8 \
+	&& locale-gen sl_SI.UTF-8 \
+	&& locale-gen uk_UA.UTF-8
 
 # Install wallabag prereqs
 #RUN add-apt-repository ppa:nginx/stable \
@@ -52,16 +52,27 @@ ENV WALLABAG_VERSION 1.9
 
 # Extract wallabag code
 ADD https://github.com/wallabag/wallabag/archive/$WALLABAG_VERSION.zip /tmp/wallabag-$WALLABAG_VERSION.zip
-ADD http://wllbg.org/vendor /tmp/vendor.zip
+#ADD http://wllbg.org/vendor /tmp/vendor.zip
 
 RUN mkdir -p /var/www
+#RUN cd /var/www \
+#    && unzip -q /tmp/wallabag-$WALLABAG_VERSION.zip \
+#    && mv wallabag-$WALLABAG_VERSION wallabag \
+#    && cd wallabag \
+#    && unzip -q /tmp/vendor.zip \
+#    && cp inc/poche/config.inc.default.php inc/poche/config.inc.php \
+#    && cp install/poche.sqlite db/
+
 RUN cd /var/www \
     && unzip -q /tmp/wallabag-$WALLABAG_VERSION.zip \
     && mv wallabag-$WALLABAG_VERSION wallabag \
     && cd wallabag \
-    && unzip -q /tmp/vendor.zip \
+    && curl -s http://getcomposer.org/installer | php \
+    && php composer.phar install
     && cp inc/poche/config.inc.default.php inc/poche/config.inc.php \
     && cp install/poche.sqlite db/
+
+cp inc/poche/config.inc.default.php inc/poche/config.inc.php \
 
 COPY 99_change_wallabag_config_salt.sh /etc/my_init.d/99_change_wallabag_config_salt.sh
 
