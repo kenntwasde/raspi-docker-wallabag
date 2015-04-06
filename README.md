@@ -8,6 +8,7 @@ This should run on a raspberry pi2 (armv7l)
     ID=$(sudo docker run -p 8080:80 -d kenntwasde/raspi-docker-wallabag:latest /sbin/my_init)
 or
     Run it in Foreground (for testing) as wallabagtest
+
     sudo docker run -p 8080:80 --rm --name wallabagtest kenntwasde/raspi-docker-wallabag:latest /sbin/my_init
 
 Then head your browser to http://localhost:8080 and enjoy a fresh wallabag install. When you're finished, just stop the docker container:
