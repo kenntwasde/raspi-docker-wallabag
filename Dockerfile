@@ -62,14 +62,16 @@ RUN mkdir -p /var/www
 #    && cp inc/poche/config.inc.default.php inc/poche/config.inc.php \
 #    && cp install/poche.sqlite db/
 
-RUN cd /var/www \
+RUN ( set -e ; set -x; \
+    cd /var/www \
     && unzip -q /tmp/wallabag-$WALLABAG_VERSION.zip \
     && mv wallabag-$WALLABAG_VERSION wallabag \
     && cd wallabag \
     && curl -s http://getcomposer.org/installer | php \
     && php composer.phar install
     && cp inc/poche/config.inc.default.php inc/poche/config.inc.php \
-    && cp install/poche.sqlite db/
+    && cp install/poche.sqlite db/ \
+    )
 
 COPY 99_change_wallabag_config_salt.sh /etc/my_init.d/99_change_wallabag_config_salt.sh
 
