@@ -8,7 +8,7 @@ DBPATH="$(dirname `readlink -m $0`)/../data"     # Or replace by absolute path t
 # Uncomment and specify to use your own wallabag SALT value in config file
 SALT='34gAogagAigJaurgbqfdvqQergvqer'            # No space in this string please
 
-IMAGENAME='bobmaerten/docker-wallabag:latest'
+IMAGENAME='kenntwasde/raspi-docker-wallabag:latest'
 
 WALLABAGSOURCE='wallabag-source'
 WALLABAGDB='wallabag-db'

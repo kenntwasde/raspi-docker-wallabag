@@ -5,7 +5,7 @@ This should run on a raspberry pi2 (armv7l)
 
 ## Usage from index.docker.io
 
-    ID=$(sudo docker run -p 8080:80 -d bobmaerten/docker-wallabag:latest /sbin/my_init)
+    ID=$(sudo docker run -p 8080:80 -d kenntwasde/raspi-docker-wallabag:latest /sbin/my_init)
 
 Then head your browser to http://localhost:8080 and enjoy a fresh wallabag install. When you're finished, just stop the docker container:
 
@@ -28,7 +28,7 @@ The default login credentials associated with the database are: `wallabag`/`wall
 You can specify a `--env WALLABAG_SALT=<insert salt value here>` in the docker run command in order to fix the salt value in the wallabag config file on container startup.
 Example:
 
-    sudo docker run -p 8080:80 -d --env WALLABAG_SALT=34gAogagAigJaurgbqfdvqQergvqer bobmaerten/docker-wallabag:latest /sbin/my_init
+    sudo docker run -p 8080:80 -d --env WALLABAG_SALT=34gAogagAigJaurgbqfdvqQergvqer kenntwasde/raspi-docker-wallabag:latest /sbin/my_init
 
 ### SSH into the container
 
