@@ -67,11 +67,11 @@ ENV WALLABAG_VERSION 1.9
 RUN set -e ; set -x; \
     mkdir -p /var/www \
     && cd /var/www \
-    && curl -sL https://github.com/wallabag/wallabag/archive/$WALLABAG_VERSION.zip > /tmp/wallabag-$WALLABAG_VERSION.zip \
+    && curl -sLS https://github.com/wallabag/wallabag/archive/$WALLABAG_VERSION.zip > /tmp/wallabag-$WALLABAG_VERSION.zip \
     && unzip -q /tmp/wallabag-$WALLABAG_VERSION.zip \
     && mv wallabag-$WALLABAG_VERSION wallabag \
     && cd wallabag \
-    && curl -sL http://getcomposer.org/installer | php \
+    && curl -sLS http://getcomposer.org/installer | php \
     && php composer.phar install \
     && cp inc/poche/config.inc.default.php inc/poche/config.inc.php \
     && cp install/poche.sqlite db/ 
@@ -80,7 +80,10 @@ COPY 99_change_wallabag_config_salt.sh /etc/my_init.d/99_change_wallabag_config_
 
 RUN \
 	rm -f /tmp/wallabag-$WALLABAG_VERSION.zip /tmp/vendor.zip; \
-	rm -rf /var/www/wallabag/install
+	echo "not removing /var/www/wallabag/install"
+
+# MN: if install not present, wallabag does no setup-routine
+#	rm -rf /var/www/wallabag/install
 
 RUN \
 	chown -R www-data:www-data /var/www/wallabag && \
