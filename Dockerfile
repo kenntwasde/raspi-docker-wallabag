@@ -2,8 +2,8 @@
 # sure you lock down to a specific version, not to `latest`!
 # See https://github.com/phusion/baseimage-docker/blob/master/Changelog.md for
 # a list of version numbers.
-FROM phusion/baseimage:0.9.16
-MAINTAINER Bob Maerten <bob.maerten@gmail.com>
+FROM kenntwasde/raspi_baseimage-docker:wheezy
+MAINTAINER Michael Niebergn <m.nieberg@gmx.de>>
 
 # Set correct environment variables.
 ENV HOME /root
@@ -25,10 +25,15 @@ RUN locale-gen sl_SI.UTF-8
 RUN locale-gen uk_UA.UTF-8
 
 # Install wallabag prereqs
-RUN add-apt-repository ppa:nginx/stable \
-    && apt-get update \
+#RUN add-apt-repository ppa:nginx/stable \
+#    && apt-get update \
+#    && apt-get install -y nginx php5-cli php5-common php5-sqlite \
+#          php5-curl php5-fpm php5-json php5-tidy wget unzip gettext
+
+RUN apt-get update \
     && apt-get install -y nginx php5-cli php5-common php5-sqlite \
           php5-curl php5-fpm php5-json php5-tidy wget unzip gettext
+
 
 # Configure php-fpm
 RUN echo "cgi.fix_pathinfo = 0" >> /etc/php5/fpm/php.ini
