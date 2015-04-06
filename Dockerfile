@@ -13,16 +13,15 @@ CMD ["/sbin/my_init"]
 
 # Install locales
 ENV DEBIAN_FRONTEND noninteractive
-RUN        locale-gen cs_CZ.UTF-8 \
-	&& locale-gen de_DE.UTF-8 \
-	&& locale-gen es_ES.UTF-8 \
-	&& locale-gen fr_FR.UTF-8 \
-	&& locale-gen it_IT.UTF-8 \
-	&& locale-gen pl_PL.UTF-8 \
-	&& locale-gen pt_BR.UTF-8 \
-	&& locale-gen ru_RU.UTF-8 \
-	&& locale-gen sl_SI.UTF-8 \
-	&& locale-gen uk_UA.UTF-8
+
+# MN in debian language must be enabled in /etc/locale.gen
+RUN     ( set -e; set -x \
+          for l in cs_CZ de_DE es_ES fr_FR it_IT pl_PL pt_BR ru_RU sl_SI locale-gen uk_UA; \
+	  do \
+		sed -i "s/# $lang/$lang/* /etc/locale.gen; \
+	        locale-gen $lang; \
+	  done \
+	)
 
 # Install wallabag prereqs
 #RUN add-apt-repository ppa:nginx/stable \
