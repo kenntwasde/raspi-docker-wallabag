@@ -18,7 +18,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN     ( set -e; set -x; \
           for lang in cs_CZ de_DE es_ES fr_FR it_IT pl_PL pt_BR ru_RU sl_SI uk_UA; \
 	  do \
-		sed -i "s/# $lang/$lang/" /etc/locale.gen; \
+		sed -i "s/# $lang-UTF8/$lang-UTF8/" /etc/locale.gen; \
 	  done ; \
 	  locale-gen ; \
 	)
