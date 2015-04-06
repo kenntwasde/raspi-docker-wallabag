@@ -15,13 +15,12 @@ CMD ["/sbin/my_init"]
 ENV DEBIAN_FRONTEND noninteractive
 
 # MN in debian language must be enabled in /etc/locale.gen
-RUN     ( set -e; set -x; \
-          for lang in cs_CZ de_DE es_ES fr_FR it_IT pl_PL pt_BR ru_RU sl_SI uk_UA; \
-	  do \
+RUN	set -e; set -x; \
+        for lang in cs_CZ de_DE es_ES fr_FR it_IT pl_PL pt_BR ru_RU sl_SI uk_UA; \
+	do \
 		sed -i "s/# $lang\.UTF-8/$lang\.UTF-8/" /etc/locale.gen; \
-	  done ; \
-	  locale-gen ; \
-	)
+	done ; \
+	locale-gen 
 
 # Install wallabag prereqs
 #RUN add-apt-repository ppa:nginx/stable \
@@ -50,10 +49,10 @@ COPY nginx.sh /etc/service/nginx/run
 ENV WALLABAG_VERSION 1.9
 
 # Extract wallabag code
-ADD https://github.com/wallabag/wallabag/archive/$WALLABAG_VERSION.zip /tmp/wallabag-$WALLABAG_VERSION.zip
+#ADD https://github.com/wallabag/wallabag/archive/$WALLABAG_VERSION.zip /tmp/wallabag-$WALLABAG_VERSION.zip
 #ADD http://wllbg.org/vendor /tmp/vendor.zip
 
-RUN mkdir -p /var/www
+#RUN mkdir -p /var/www
 #RUN cd /var/www \
 #    && unzip -q /tmp/wallabag-$WALLABAG_VERSION.zip \
 #    && mv wallabag-$WALLABAG_VERSION wallabag \
@@ -62,16 +61,17 @@ RUN mkdir -p /var/www
 #    && cp inc/poche/config.inc.default.php inc/poche/config.inc.php \
 #    && cp install/poche.sqlite db/
 
-RUN ( set -e ; set -x; \
-    cd /var/www \
+RUN set -e ; set -x; \
+    mkdir -p /var/www \
+    && cd /var/www \
+    && curl -sL https://github.com/wallabag/wallabag/archive/$WALLABAG_VERSION.zip > /tmp/wallabag-$WALLABAG_VERSION.zip \
     && unzip -q /tmp/wallabag-$WALLABAG_VERSION.zip \
     && mv wallabag-$WALLABAG_VERSION wallabag \
     && cd wallabag \
-    && curl -s http://getcomposer.org/installer | php \
-    && php composer.phar install
+    && curl -sL http://getcomposer.org/installer | php \
+    && php composer.phar install \
     && cp inc/poche/config.inc.default.php inc/poche/config.inc.php \
-    && cp install/poche.sqlite db/ \
-    )
+    && cp install/poche.sqlite db/ 
 
 COPY 99_change_wallabag_config_salt.sh /etc/my_init.d/99_change_wallabag_config_salt.sh
 
