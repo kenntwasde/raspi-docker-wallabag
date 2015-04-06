@@ -3,7 +3,7 @@
 # See https://github.com/phusion/baseimage-docker/blob/master/Changelog.md for
 # a list of version numbers.
 FROM kenntwasde/raspi_baseimage-docker:wheezy
-MAINTAINER Michael Niebergn <m.nieberg@gmx.de>>
+MAINTAINER Michael Nieberg <m.nieberg@gmx.de>>
 
 # Set correct environment variables.
 ENV HOME /root
