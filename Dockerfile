@@ -12,7 +12,7 @@ ENV HOME /root
 CMD ["/sbin/my_init"]
 
 # Install locales
-ENV DEBIAN_FRONTEND noninteractive
+#ENV DEBIAN_FRONTEND noninteractive
 
 # MN in debian language must be enabled in /etc/locale.gen
 RUN	set -e; set -x; \
@@ -28,14 +28,17 @@ RUN	set -e; set -x; \
 #    && apt-get install -y nginx php5-cli php5-common php5-sqlite \
 #          php5-curl php5-fpm php5-json php5-tidy wget unzip gettext
 
-RUN apt-get update \
-    && apt-get install -y nginx php5-cli php5-common php5-sqlite \
+RUN export DEBIAN_FRONTEND=noninteractive; \
+    apt-get update \
+    && apt-get install -y --no-install-recommends \
+	  nginx php5-cli php5-common php5-sqlite \
           php5-curl php5-fpm php5-json php5-tidy wget unzip gettext
 
 
 # Configure php-fpm
-RUN echo "cgi.fix_pathinfo = 0" >> /etc/php5/fpm/php.ini
-RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+RUN \
+	echo "cgi.fix_pathinfo = 0" >> /etc/php5/fpm/php.ini && \
+	echo "daemon off;" >> /etc/nginx/nginx.conf
 
 COPY www.conf /etc/php5/fpm/pool.d/www.conf
 
@@ -75,11 +78,13 @@ RUN set -e ; set -x; \
 
 COPY 99_change_wallabag_config_salt.sh /etc/my_init.d/99_change_wallabag_config_salt.sh
 
-RUN rm -f /tmp/wallabag-$WALLABAG_VERSION.zip /tmp/vendor.zip
-RUN rm -rf /var/www/wallabag/install
+RUN \
+	rm -f /tmp/wallabag-$WALLABAG_VERSION.zip /tmp/vendor.zip; \
+	rm -rf /var/www/wallabag/install
 
-RUN chown -R www-data:www-data /var/www/wallabag
-RUN chmod 755 -R /var/www/wallabag
+RUN \
+	chown -R www-data:www-data /var/www/wallabag && \
+	chmod 755 -R /var/www/wallabag
 
 # Configure nginx to serve wallabag app
 COPY nginx-wallabag /etc/nginx/sites-available/default
