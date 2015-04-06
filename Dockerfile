@@ -31,8 +31,18 @@ RUN	set -e; set -x; \
 RUN export DEBIAN_FRONTEND=noninteractive; \
     apt-get update \
     && apt-get install -y --no-install-recommends \
-	  nginx php5-cli php5-common php5-sqlite \
-          php5-curl php5-fpm php5-json php5-tidy wget unzip gettext
+	nginx \
+	php5-cli \
+	php5-common \
+	php5-sqlite \
+        php5-curl \
+	php5-fpm \
+	php5-json \
+	php5-tidy \
+	php5-gd \
+	wget \
+	unzip \
+	gettext
 
 
 # Configure php-fpm
