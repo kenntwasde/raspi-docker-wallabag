@@ -1,6 +1,7 @@
 # docker-wallabag
 
 Dockerfile used to build a wallabag docker image.
+This should run on a raspberry pi2 (armv7l)
 
 ## Usage from index.docker.io
 
