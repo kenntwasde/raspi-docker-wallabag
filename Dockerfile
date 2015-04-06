@@ -19,8 +19,8 @@ RUN     ( set -e; set -x; \
           for lang in cs_CZ de_DE es_ES fr_FR it_IT pl_PL pt_BR ru_RU sl_SI uk_UA; \
 	  do \
 		sed -i "s/# $lang/$lang/" /etc/locale.gen; \
-	        locale-gen $lang; \
 	  done \
+	  locale-gen ; \
 	)
 
 # Install wallabag prereqs
