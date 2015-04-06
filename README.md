@@ -41,7 +41,7 @@ Just uncomment le SOURCEPATH line, and set it to the absolut path of the wallaba
 
 ## building from Dockerfile
 
-    sudo docker build -t docker-wallabag .
+    sudo docker build -t raspi-docker-wallabag .
 
 # Credits
 
